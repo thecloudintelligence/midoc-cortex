@@ -8,6 +8,9 @@ pr:
     include:
       - main
 
+variables:
+  - group: midoc-cortex-live
+
 pool:
   vmImage: windows-latest
 
