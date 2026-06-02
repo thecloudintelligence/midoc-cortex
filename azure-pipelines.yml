@@ -33,7 +33,7 @@ steps:
       NODE_OPTIONS: --max-old-space-size=4184
 
   - task: PublishBuildArtifacts@1
-    displayName: Publish build artifact
+    displayName: 'Publish Artifact: drop'
     inputs:
-      PathtoPublish: dist
+      PathtoPublish: build
       ArtifactName: drop
