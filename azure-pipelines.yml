@@ -1,38 +1,39 @@
-resources:
-  repositories:
-  - repository: self
-    type: git
-    ref: refs/heads/main
-jobs:
-- job: Job_1
-  displayName: Agent job 1
-  pool:
-    vmImage: windows-latest
-  steps:
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: windows-latest
+
+steps:
   - checkout: self
     clean: true
     fetchTags: false
+
   - task: NodeTool@0
-    displayName: Use Node 21.7.2
+    displayName: Use Node.js 22.x
     inputs:
-      versionSpec: 21.7.2
-  - task: Npm@1
-    displayName: npm custom
-    inputs:
-      command: custom
-      verbose: false
-      customCommand: install --force
-  - task: CmdLine@2
-    displayName: Command Line Script
-    inputs:
-      script: >
-        echo Compiling Build Starts Now
+      versionSpec: 22.x
 
-        set NODE_OPTIONS=--max-old-space-size=4184 && npm run build
+  - script: npm ci
+    displayName: Install dependencies
 
-        echo Build Compiled and Ready
+  - script: npm run lint
+    displayName: Run lint checks
+
+  - script: npm run build
+    displayName: Build application
+    env:
+      NODE_OPTIONS: --max-old-space-size=4184
+
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
+    displayName: Publish build artifact
     inputs:
-      PathtoPublish: build
-...
+      PathtoPublish: dist
+      ArtifactName: drop
