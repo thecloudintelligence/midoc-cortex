@@ -1,6 +1,7 @@
 import type { DoctorNotes, DoctorSignInResult, MidocChatMessage, PatientContext } from '@/types/chat'
 
-export function mockSignIn(email: string, _password: string): DoctorSignInResult {
+export function mockSignIn(email: string, password: string): DoctorSignInResult {
+  void password
   return {
     token: 'mock-jwt-token',
     doctorid: 'doc-1',

@@ -34,6 +34,16 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
 
   const selected = rows.find((r) => rowKey(r) === selectedKey)
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (!nextOpen) {
+      setQuery('')
+      setRows([])
+      setSelectedKey(null)
+      setSearchError(null)
+    }
+    onOpenChange(nextOpen)
+  }
+
   const runSearch = useCallback(
     async (q: string) => {
       setIsSearching(true)
@@ -60,15 +70,6 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
     return () => clearTimeout(timer)
   }, [open, query, runSearch])
 
-  useEffect(() => {
-    if (!open) {
-      setQuery('')
-      setRows([])
-      setSelectedKey(null)
-      setSearchError(null)
-    }
-  }, [open])
-
   const handleConfirm = async () => {
     if (!selected || !doctorId || !hospitalId || !branchId) return
     if (!selected.appointmentId) {
@@ -93,14 +94,14 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
     setIsOpening(true)
     try {
       await startConsultation(ctx, patient)
-      onOpenChange(false)
+      handleOpenChange(false)
     } finally {
       setIsOpening(false)
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Select visit</DialogTitle>
@@ -183,7 +184,7 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
         </div>
 
         <div className="flex justify-end gap-2">
-          <Button variant="secondary" onClick={() => onOpenChange(false)}>
+          <Button variant="secondary" onClick={() => handleOpenChange(false)}>
             Cancel
           </Button>
           <Button onClick={handleConfirm} disabled={!selectedKey || isOpening}>
