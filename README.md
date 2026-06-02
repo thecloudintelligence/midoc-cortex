@@ -11,7 +11,7 @@ Desktop-first clinical copilot UI for doctors during live consultations. Chat-fi
 - react-markdown + Radix UI primitives (shadcn-style components)
 
 ## Quick start
-
+ 
 ```bash
 npm install
 cp .env.example .env
