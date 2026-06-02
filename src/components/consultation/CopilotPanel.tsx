@@ -89,7 +89,7 @@ export function CopilotPanel({
           error={error}
           onSuggestion={handleSend}
           onRegenerate={onRegenerate}
-          onRetry={() => lastSent && handleSend(lastSent)}
+          onRetry={() => (lastSent ? handleSend(lastSent) : onRetry())}
           onLoadDemo={onLoadDemo}
         />
         <Composer onSend={handleSend} isLoading={isLoading} />
