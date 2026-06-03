@@ -105,10 +105,19 @@ export interface ReportItem {
   type: string
 }
 
+export interface DoctorBranch {
+  branchid: string
+  hospitalid: string
+  hospitalname?: string
+  branchname?: string
+  roleid?: string
+}
+
 export interface DoctorSignInResult {
   token: string
   doctorid?: string
   hospitalid?: string
   branchid?: string
   name?: string
+  branches?: DoctorBranch[]
 }

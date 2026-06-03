@@ -1,4 +1,5 @@
 import type { AgentMeta, ChatMessage, ChatResponse, ConsultationContext } from '@/types/chat'
+import { buildAuthHeaders, type DoctorScope } from '@/lib/agentScope'
 import { messagesForApi } from '@/lib/chatMessages'
 import { mockChatResponse } from '@/lib/mock'
 
@@ -10,6 +11,7 @@ export type ConnectionStatus = 'unknown' | 'healthy' | 'unavailable'
 export interface SendChatOptions {
   threadId?: string
   consultation?: ConsultationContext | null
+  scope: DoctorScope
 }
 
 export async function checkHealth(): Promise<ConnectionStatus> {
@@ -44,9 +46,9 @@ export async function fetchMeta(): Promise<AgentMeta | null> {
 
 export async function sendChat(
   messages: ChatMessage[],
-  options: SendChatOptions = {},
+  options: SendChatOptions,
 ): Promise<ChatResponse> {
-  const { threadId, consultation } = options
+  const { threadId, consultation, scope } = options
 
   if (USE_MOCK) {
     await new Promise((r) => setTimeout(r, 1200))
@@ -69,9 +71,16 @@ export async function sendChat(
     body.appointment_id = consultation.appointmentId
   }
 
+  if (scope.doctorId) body.doctor_id = scope.doctorId
+  if (scope.hospitalId) body.hospital_id = scope.hospitalId
+  if (scope.branchId) body.branch_id = scope.branchId
+
   const res = await fetch(`${API_URL}/v1/chat`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...buildAuthHeaders(scope),
+    },
     body: JSON.stringify(body),
   })
 

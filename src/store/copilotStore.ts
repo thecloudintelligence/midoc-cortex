@@ -9,6 +9,8 @@ import type {
   PendingAction,
 } from '@/types/chat'
 import type { ConnectionStatus } from '@/lib/api'
+import { scopeFromAuth } from '@/lib/agentScope'
+import { useAuthStore } from '@/store/authStore'
 import { useConsultationStore } from '@/store/consultationStore'
 
 const LOAD_NOTES_PROMPT =
@@ -107,9 +109,11 @@ export const useCopilotStore = create<CopilotState>((set, get) => ({
     }
 
     try {
+      const auth = useAuthStore.getState()
       const response = await sendChat(apiMessages, {
         threadId: threadId ?? undefined,
         consultation: consultation.context,
+        scope: scopeFromAuth(auth),
       })
 
       consultation.syncNotesFromMessages(response.messages)

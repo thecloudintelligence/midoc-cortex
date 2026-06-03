@@ -1,19 +1,18 @@
 import type { PatientCandidate } from '@/types/chat'
+import { buildAuthHeaders, type DoctorScope } from '@/lib/agentScope'
 import { parsePatientSearch, parseToolError } from '@/lib/parseTool'
 import { mockSearchPatients } from '@/lib/patientMock'
 
 const API_URL = import.meta.env.VITE_AGENT_API_URL ?? 'http://localhost:8080'
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 
-function authHeaders(token?: string | null): HeadersInit {
-  const headers: HeadersInit = { Accept: 'application/json' }
-  if (token) headers.Authorization = `Bearer ${token}`
-  return headers
-}
-
 export async function searchPatients(
   query: string,
-  options?: { token?: string | null; page?: number; pageSize?: number },
+  options: {
+    scope: DoctorScope
+    page?: number
+    pageSize?: number
+  },
 ): Promise<PatientCandidate[]> {
   if (USE_MOCK) {
     await new Promise((r) => setTimeout(r, 300))
@@ -26,7 +25,7 @@ export async function searchPatients(
   if (options?.pageSize) params.set('page_size', String(options.pageSize))
 
   const res = await fetch(`${API_URL}/v1/patients/search?${params.toString()}`, {
-    headers: authHeaders(options?.token),
+    headers: buildAuthHeaders(options.scope),
     signal: AbortSignal.timeout(30000),
   })
 

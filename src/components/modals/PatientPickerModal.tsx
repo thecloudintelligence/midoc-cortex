@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/authStore'
 import { useCopilotStore } from '@/store/copilotStore'
+import { scopeFromAuth } from '@/lib/agentScope'
 import { searchPatients } from '@/lib/agentPatients'
 import type { ConsultationContext, PatientCandidate, PatientContext } from '@/types/chat'
 
@@ -29,7 +30,8 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
   const [isOpening, setIsOpening] = useState(false)
   const [searchError, setSearchError] = useState<string | null>(null)
 
-  const { token, doctorId, hospitalId, branchId } = useAuthStore()
+  const auth = useAuthStore()
+  const { doctorId, hospitalId, branchId } = auth
   const startConsultation = useCopilotStore((s) => s.startConsultation)
 
   const selected = rows.find((r) => rowKey(r) === selectedKey)
@@ -49,10 +51,14 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
       setIsSearching(true)
       setSearchError(null)
       try {
-        const results = await searchPatients(q, { token, page: 1, pageSize: 50 })
+        const results = await searchPatients(q, {
+          scope: scopeFromAuth(auth),
+          page: 1,
+          pageSize: 50,
+        })
         setRows(results)
         if (results.length === 0) {
-          setSearchError('No patients in queue. Sign in and check agent MIDOC_* env IDs.')
+          setSearchError('No patients in your appointment queue for this clinic.')
         }
       } catch (e) {
         setSearchError(e instanceof Error ? e.message : 'Failed to load patients')
@@ -61,7 +67,7 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
         setIsSearching(false)
       }
     },
-    [token],
+    [auth.token, auth.doctorId, auth.hospitalId, auth.branchId],
   )
 
   useEffect(() => {

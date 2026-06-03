@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { doctorSignIn } from '@/lib/agentAuth'
 import { mockSignIn } from '@/lib/midocMock'
+import type { DoctorBranch } from '@/types/chat'
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 
@@ -11,19 +12,26 @@ interface AuthState {
   hospitalId: string | null
   branchId: string | null
   doctorName: string | null
+  branches: DoctorBranch[]
   isLoading: boolean
   error: string | null
 
   login: (email: string, password: string) => Promise<void>
+  selectBranch: (branch: DoctorBranch) => void
   logout: () => void
   isAuthenticated: () => boolean
+  needsBranchSelection: () => boolean
 }
 
-function envIds() {
+function idsFromSignIn(result: {
+  doctorid?: string
+  hospitalid?: string
+  branchid?: string
+}) {
   return {
-    doctorId: import.meta.env.VITE_MIDOC_DOCTOR_ID ?? null,
-    hospitalId: import.meta.env.VITE_MIDOC_HOSPITAL_ID ?? null,
-    branchId: import.meta.env.VITE_MIDOC_BRANCH_ID ?? null,
+    doctorId: result.doctorid != null ? String(result.doctorid) : null,
+    hospitalId: result.hospitalid != null ? String(result.hospitalid) : null,
+    branchId: result.branchid != null ? String(result.branchid) : null,
   }
 }
 
@@ -31,10 +39,11 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       token: null,
-      doctorId: envIds().doctorId,
-      hospitalId: envIds().hospitalId,
-      branchId: envIds().branchId,
+      doctorId: null,
+      hospitalId: null,
+      branchId: null,
       doctorName: null,
+      branches: [],
       isLoading: false,
       error: null,
 
@@ -45,20 +54,31 @@ export const useAuthStore = create<AuthState>()(
             ? mockSignIn(email, password)
             : await doctorSignIn(email, password)
 
-          const fallback = envIds()
+          const ids = idsFromSignIn(result)
+          const branches = result.branches ?? []
+
           set({
             token: result.token ?? null,
-            doctorId: result.doctorid ?? fallback.doctorId,
-            hospitalId: result.hospitalid ?? fallback.hospitalId,
-            branchId: result.branchid ?? fallback.branchId,
+            doctorId: ids.doctorId,
+            hospitalId: ids.hospitalId,
+            branchId: ids.branchId,
             doctorName: result.name ?? email.split('@')[0],
+            branches,
             isLoading: false,
           })
 
-          if (!get().doctorId || !get().hospitalId || !get().branchId) {
-            throw new Error(
-              'Missing doctor scope. Set IDs in agent .env or ensure sign-in returns doctorid, hospitalid, branchid.',
-            )
+          if (!get().token || !get().doctorId) {
+            throw new Error('Sign-in did not return doctor id or token')
+          }
+
+          if (!get().hospitalId || !get().branchId) {
+            if (branches.length === 1) {
+              get().selectBranch(branches[0])
+            } else if (branches.length === 0) {
+              throw new Error(
+                'Sign-in did not return clinic/branch. Contact support or try the main Midoc app login.',
+              )
+            }
           }
         } catch (e) {
           const message = e instanceof Error ? e.message : 'Login failed'
@@ -67,20 +87,40 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: () => {
-        const fallback = envIds()
+      selectBranch: (branch) => {
         set({
-          token: null,
-          doctorId: fallback.doctorId,
-          hospitalId: fallback.hospitalId,
-          branchId: fallback.branchId,
-          doctorName: null,
+          hospitalId: String(branch.hospitalid),
+          branchId: String(branch.branchid),
           error: null,
         })
       },
 
-      isAuthenticated: () =>
-        Boolean(get().token && get().doctorId && get().hospitalId && get().branchId),
+      logout: () => {
+        set({
+          token: null,
+          doctorId: null,
+          hospitalId: null,
+          branchId: null,
+          doctorName: null,
+          branches: [],
+          error: null,
+        })
+      },
+
+      isAuthenticated: () => {
+        const s = get()
+        return Boolean(s.token && s.doctorId && s.hospitalId && s.branchId)
+      },
+
+      needsBranchSelection: () => {
+        const s = get()
+        return Boolean(
+          s.token &&
+            s.doctorId &&
+            (!s.hospitalId || !s.branchId) &&
+            s.branches.length > 1,
+        )
+      },
     }),
     {
       name: 'midoc-auth',
@@ -90,6 +130,7 @@ export const useAuthStore = create<AuthState>()(
         hospitalId: s.hospitalId,
         branchId: s.branchId,
         doctorName: s.doctorName,
+        branches: s.branches,
       }),
     },
   ),
