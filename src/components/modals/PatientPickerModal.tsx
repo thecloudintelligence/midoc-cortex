@@ -53,8 +53,6 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
       try {
         const results = await searchPatients(q, {
           scope: scopeFromAuth(auth),
-          page: 1,
-          pageSize: 50,
         })
         setRows(results)
         if (results.length === 0) {
