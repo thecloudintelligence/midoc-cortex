@@ -47,7 +47,7 @@ export function PatientChatPanel({
   return (
     <div className="flex h-full min-w-0 flex-1 flex-col border-r border-[var(--color-border)] bg-white">
       <div className="flex items-center gap-2 border-b border-[var(--color-border)] px-4 py-3">
-        <MessageCircle className="h-4 w-4 text-[#0D6E6E]" />
+        <MessageCircle className="h-4 w-4 text-[var(--color-accent)]" />
         <h2 className="text-sm font-semibold">Patient chat</h2>
         <span className="ml-auto text-xs text-[var(--color-muted)]">Midoc RPC</span>
       </div>
@@ -88,7 +88,7 @@ export function PatientChatPanel({
                   'max-w-[85%] rounded-[var(--radius-bubble)] px-4 py-2.5 text-sm',
                   fromPatient
                     ? 'bg-[var(--color-sidebar)] text-[var(--color-foreground)]'
-                    : 'bg-[#0D6E6E] text-white',
+                    : 'bg-[var(--color-accent)] text-white',
                 )}
               >
                 <p className="whitespace-pre-wrap">{text}</p>
@@ -125,12 +125,12 @@ export function PatientChatPanel({
             rows={2}
             disabled={!hasConsultation || isSending}
             placeholder={hasConsultation ? 'Message patient…' : 'Select a consultation first'}
-            className="min-h-[44px] flex-1 resize-none rounded-[var(--radius-button)] border border-[var(--color-border)] bg-white px-3 py-2 text-sm focus:border-[#0D6E6E]/50 focus:outline-none focus:ring-2 focus:ring-[#0D6E6E]/20 disabled:opacity-50"
+            className="min-h-[44px] flex-1 resize-none rounded-[var(--radius-button)] border border-[var(--color-border)] bg-white px-3 py-2 text-sm focus:border-[var(--color-accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20 disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={!hasConsultation || isSending}
-            className="self-end rounded-[var(--radius-button)] bg-[#0D6E6E] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="self-end rounded-[var(--radius-button)] bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Send'}
           </button>

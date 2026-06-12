@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Stethoscope, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/store/authStore'
 import type { DoctorBranch } from '@/types/chat'
+import { MidocLogo } from '@/components/brand/MidocLogo'
 
 export function LoginScreen() {
   const [email, setEmail] = useState('')
@@ -43,11 +44,14 @@ export function LoginScreen() {
     return `Hospital ${b.hospitalid}, Branch ${b.branchid}`
   }
 
+  const inputClassName =
+    'w-full rounded-[var(--radius-button)] border border-[var(--color-border)] bg-white px-3 py-2.5 text-sm focus:border-[var(--color-muted-dark)] focus:outline-none focus:ring-2 focus:ring-[var(--color-muted-dark)]/20'
+
   if (showBranchStep) {
     return (
       <div className="flex h-full items-center justify-center bg-[var(--color-background)] px-4">
         <div className="w-full max-w-sm rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-8 shadow-sm">
-          <h1 className="text-xl font-semibold">Select clinic</h1>
+          <h1 className="text-xl font-semibold text-[var(--color-foreground)]">Select clinic</h1>
           <p className="mt-2 text-sm text-[var(--color-muted)]">
             {doctorName ? `Signed in as ${doctorName}. ` : ''}
             Choose which clinic/branch to use for this session.
@@ -61,7 +65,7 @@ export function LoginScreen() {
                   key={key}
                   className={`flex cursor-pointer items-start gap-3 rounded-[var(--radius-button)] border px-3 py-2 text-sm ${
                     selectedBranchKey === key
-                      ? 'border-[#0D6E6E] bg-[#0D6E6E]/5'
+                      ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/5'
                       : 'border-[var(--color-border)]'
                   }`}
                 >
@@ -101,10 +105,8 @@ export function LoginScreen() {
     <div className="flex h-full items-center justify-center bg-[var(--color-background)] px-4">
       <div className="w-full max-w-sm rounded-[var(--radius-card)] border border-[var(--color-border)] bg-white p-8 shadow-sm">
         <div className="mb-6 flex flex-col items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#0D6E6E] text-white">
-            <Stethoscope className="h-6 w-6" />
-          </div>
-          <h1 className="text-xl font-semibold">Doctor notes</h1>
+          <MidocLogo className="h-10" />
+          <h1 className="text-xl font-semibold text-[var(--color-foreground)]">Login</h1>
           <p className="text-center text-sm text-[var(--color-muted)]">
             Sign in with your Midoc doctor account, then pick a patient.
           </p>
@@ -112,7 +114,7 @@ export function LoginScreen() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="mb-1 block text-sm font-medium">
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-[var(--color-foreground)]">
               Email
             </label>
             <input
@@ -121,12 +123,12 @@ export function LoginScreen() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[#0D6E6E]/50 focus:outline-none focus:ring-2 focus:ring-[#0D6E6E]/20"
+              className={inputClassName}
               placeholder="doctor@clinic.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium">
+            <label htmlFor="password" className="mb-1 block text-sm font-medium text-[var(--color-foreground)]">
               Password
             </label>
             <input
@@ -135,7 +137,7 @@ export function LoginScreen() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[#0D6E6E]/50 focus:outline-none focus:ring-2 focus:ring-[#0D6E6E]/20"
+              className={inputClassName}
             />
           </div>
 
@@ -152,7 +154,7 @@ export function LoginScreen() {
                 Signing in…
               </>
             ) : (
-              'Sign in'
+              'Continue'
             )}
           </Button>
         </form>

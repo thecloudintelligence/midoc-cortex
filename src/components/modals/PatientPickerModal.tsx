@@ -121,7 +121,7 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
           placeholder="Filter by name, patient id, or MRN"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[#0D6E6E]/50 focus:outline-none focus:ring-2 focus:ring-[#0D6E6E]/20"
+          className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[var(--color-accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
           autoFocus
         />
 
@@ -134,7 +134,7 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
         <div className="relative max-h-72 overflow-auto rounded-[var(--radius-card)] border border-[var(--color-border)]">
           {isSearching && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
-              <Loader2 className="h-5 w-5 animate-spin text-[#0D6E6E]" />
+              <Loader2 className="h-5 w-5 animate-spin text-[var(--color-accent)]" />
             </div>
           )}
           <table className="w-full text-sm">
@@ -161,7 +161,7 @@ export function PatientPickerModal({ open, onOpenChange }: PatientPickerModalPro
                   <tr
                     key={key}
                     className={`border-t border-[var(--color-border)] hover:bg-[var(--color-sidebar)] ${
-                      selectedKey === key ? 'bg-[#0D6E6E]/5' : ''
+                      selectedKey === key ? 'bg-[var(--color-accent)]/5' : ''
                     }`}
                   >
                     <td className="px-4 py-2 font-medium">{p.name}</td>

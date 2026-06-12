@@ -53,7 +53,7 @@ export function SessionsSidebar({
             placeholder="Search sessions"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] bg-white py-2 pl-9 pr-3 text-sm focus:border-[#0D6E6E]/50 focus:outline-none focus:ring-2 focus:ring-[#0D6E6E]/20"
+            className="w-full rounded-[var(--radius-button)] border border-[var(--color-border)] bg-white py-2 pl-9 pr-3 text-sm focus:border-[var(--color-accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/20"
           />
         </div>
       </div>

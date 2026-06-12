@@ -66,7 +66,7 @@ export function ToolRunCard({ message, isRunning }: ToolRunCardProps) {
         ) : (
           <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[var(--color-muted)]" />
         )}
-        <Wrench className="h-3.5 w-3.5 shrink-0 text-[#0D6E6E]" aria-hidden />
+        <Wrench className="h-3.5 w-3.5 shrink-0 text-[var(--color-accent)]" aria-hidden />
         <div className="min-w-0 flex-1">
           <span className="font-medium text-[var(--color-foreground)]">{label}</span>
           {summary && !expanded && (
@@ -74,7 +74,7 @@ export function ToolRunCard({ message, isRunning }: ToolRunCardProps) {
           )}
         </div>
         {status === 'running' && (
-          <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-[#0D6E6E]" aria-label="Running" />
+          <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-[var(--color-accent)]" aria-label="Running" />
         )}
         {status === 'done' && (
           <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[var(--color-success)]" aria-label="Complete" />

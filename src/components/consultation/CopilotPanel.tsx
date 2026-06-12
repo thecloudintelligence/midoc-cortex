@@ -49,7 +49,7 @@ export function CopilotPanel({
   return (
     <aside className="flex h-full w-[360px] shrink-0 flex-col border-l border-[var(--color-border)] bg-[var(--color-sidebar)]">
       <div className="flex items-center gap-2 border-b border-[var(--color-border)] bg-white px-4 py-3">
-        <Sparkles className="h-4 w-4 text-[#0D6E6E]" />
+        <Sparkles className="h-4 w-4 text-[var(--color-accent)]" />
         <h2 className="text-sm font-semibold">AI copilot</h2>
         <span className="ml-auto text-xs text-[var(--color-muted)]">Agent API</span>
       </div>
@@ -74,7 +74,7 @@ export function CopilotPanel({
             type="button"
             onClick={() => handleSend(label)}
             disabled={isLoading}
-            className="rounded-full border border-[var(--color-border)] bg-[var(--color-sidebar)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-foreground)] transition-colors hover:border-[#0D6E6E]/40 hover:bg-[#0D6E6E]/5 disabled:opacity-50"
+            className="rounded-full border border-[var(--color-border)] bg-[var(--color-sidebar)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-foreground)] transition-colors hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 disabled:opacity-50"
           >
             {label.length > 35 ? label.slice(0, 35) + '…' : label}
           </button>

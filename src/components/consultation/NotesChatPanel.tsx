@@ -50,7 +50,7 @@ export function NotesChatPanel({
   return (
     <div className="flex h-full min-w-0 flex-1 flex-col bg-[var(--color-background)]">
       <div className="flex items-center gap-2 border-b border-[var(--color-border)] bg-white px-4 py-3">
-        <FileText className="h-4 w-4 text-[#0D6E6E]" />
+        <FileText className="h-4 w-4 text-[var(--color-accent)]" />
         <h2 className="text-sm font-semibold">Doctor notes chat</h2>
         <span className="ml-auto text-xs text-[var(--color-muted)]">Agent only</span>
       </div>
@@ -81,7 +81,7 @@ export function NotesChatPanel({
             type="button"
             onClick={() => handleSend(label)}
             disabled={isLoading || !hasConsultation}
-            className="rounded-full border border-[var(--color-border)] bg-[var(--color-sidebar)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-foreground)] transition-colors hover:border-[#0D6E6E]/40 hover:bg-[#0D6E6E]/5 disabled:opacity-50"
+            className="rounded-full border border-[var(--color-border)] bg-[var(--color-sidebar)] px-2.5 py-1 text-[11px] font-medium text-[var(--color-foreground)] transition-colors hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 disabled:opacity-50"
           >
             {label.length > 42 ? label.slice(0, 42) + '…' : label}
           </button>

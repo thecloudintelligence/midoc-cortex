@@ -108,7 +108,7 @@ export function ClinicalPanel({
                 {patient.conditions && patient.conditions.length > 0 && (
                   <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] px-4 py-3">
                     <div className="flex items-center gap-2 text-sm font-semibold">
-                      <Heart className="h-4 w-4 text-[#0D6E6E]" />
+                      <Heart className="h-4 w-4 text-[var(--color-accent)]" />
                       Chronic conditions
                     </div>
                     <ul className="mt-2 text-sm text-[var(--color-muted)]">
@@ -122,7 +122,7 @@ export function ClinicalPanel({
                 {patient.activeMeds && patient.activeMeds.length > 0 && (
                   <div className="rounded-[var(--radius-card)] border border-[var(--color-border)] px-4 py-3">
                     <div className="flex items-center gap-2 text-sm font-semibold">
-                      <Pill className="h-4 w-4 text-[#0D6E6E]" />
+                      <Pill className="h-4 w-4 text-[var(--color-accent)]" />
                       Active medications
                     </div>
                     <ul className="mt-2 text-sm text-[var(--color-muted)]">

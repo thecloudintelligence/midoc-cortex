@@ -80,7 +80,6 @@ export const useCopilotStore = create<CopilotState>((set, get) => ({
     }
     useConsultationStore.getState().openConsultation(ctx, patient)
     set({ messages: DEMO_MESSAGES, error: null, isLoading: false })
-    useConsultationStore.getState().syncNotesFromMessages(DEMO_MESSAGES)
   },
 
   sendMessage: async (content, options) => {
@@ -104,10 +103,6 @@ export const useCopilotStore = create<CopilotState>((set, get) => ({
       error: null,
     })
 
-    if (trimmed === LOAD_NOTES_PROMPT) {
-      consultation.setNotesLoading(true)
-    }
-
     try {
       const auth = useAuthStore.getState()
       const response = await sendChat(apiMessages, {
@@ -115,8 +110,6 @@ export const useCopilotStore = create<CopilotState>((set, get) => ({
         consultation: consultation.context,
         scope: scopeFromAuth(auth),
       })
-
-      consultation.syncNotesFromMessages(response.messages)
 
       const lastAssistant = [...response.messages]
         .reverse()
@@ -157,7 +150,6 @@ export const useCopilotStore = create<CopilotState>((set, get) => ({
       })
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Request failed'
-      consultation.setNotesLoading(false)
       set({
         isLoading: false,
         loadingStep: null,

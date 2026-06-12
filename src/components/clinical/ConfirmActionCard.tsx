@@ -36,8 +36,8 @@ export function ConfirmActionCard({ action, onConfirm, onDismiss }: ConfirmActio
       )}
     >
       <div className="flex gap-2">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0D6E6E]/10">
-          <Icon className="h-3.5 w-3.5 text-[#0D6E6E]" />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--color-accent)]/10">
+          <Icon className="h-3.5 w-3.5 text-[var(--color-accent)]" />
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-xs font-medium text-[var(--color-foreground)]">{action.summary}</p>

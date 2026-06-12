@@ -4,22 +4,23 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0D6E6E] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-button)] text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-muted-dark)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-[#0D6E6E] text-white hover:bg-[#0a5a5a]',
+        default:
+          'bg-[var(--color-primary)] text-[var(--color-primary-foreground)] hover:bg-[var(--color-primary-hover)]',
         secondary:
-          'border border-[var(--color-border)] bg-white text-[var(--color-foreground)] hover:bg-[var(--color-sidebar)]',
-        ghost: 'hover:bg-[var(--color-sidebar)] text-[var(--color-foreground)]',
-        destructive: 'bg-[var(--color-error)] text-white hover:bg-[#a31f1f]',
+          'border border-[var(--color-border)] bg-[var(--color-background)] text-[var(--color-foreground)] shadow-[0px_0px_0px_3px_#E6E7E94D,0px_1px_2px_0px_#C1C2C680,0px_-8px_12px_0px_#D8D8D833_inset] hover:bg-[#E6E7E9]/40',
+        ghost: 'hover:bg-[var(--color-border)]/40 text-[var(--color-foreground)]',
+        destructive: 'bg-[var(--color-error)] text-white hover:bg-[#aa2e26]',
         outline:
-          'border border-[#0D6E6E] text-[#0D6E6E] bg-transparent hover:bg-[#0D6E6E]/10',
+          'border border-[var(--color-accent)] text-[var(--color-accent)] bg-transparent hover:bg-[var(--color-accent)]/10',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 px-6',
+        default: 'h-10 px-4 py-2',
+        sm: 'h-8 rounded-[var(--radius-button)] px-3 text-xs',
+        lg: 'h-12 px-6',
         icon: 'h-9 w-9',
       },
     },

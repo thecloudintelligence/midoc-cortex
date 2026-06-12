@@ -30,7 +30,7 @@ export function MessageBubble({ message, onRegenerate, isStreaming }: MessageBub
       <div
         className={cn(
           'flex h-8 w-8 shrink-0 items-center justify-center rounded-full',
-          isUser ? 'bg-[#0D6E6E]/15 text-[#0D6E6E]' : 'bg-[var(--color-sidebar)] text-[#0D6E6E]',
+          isUser ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)]' : 'bg-[var(--color-sidebar)] text-[var(--color-accent)]',
         )}
         aria-hidden
       >
@@ -42,7 +42,7 @@ export function MessageBubble({ message, onRegenerate, isStreaming }: MessageBub
           className={cn(
             'relative rounded-[var(--radius-bubble)] px-4 py-3 text-[15px]',
             isUser
-              ? 'bg-[#0D6E6E] text-white'
+              ? 'bg-[var(--color-primary)] text-white'
               : 'border border-[var(--color-border)] bg-white text-[var(--color-foreground)] shadow-sm',
           )}
         >
